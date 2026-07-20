@@ -1,6 +1,6 @@
 ---
 name: agent-workflow-bootstrap
-description: Initialize, audit, or upgrade a repository with a reusable multi-agent engineering workflow. Use when the user asks to establish project development rules, define Architect/Developer/UI/QA/Beta agent responsibilities, add a Design Required and Design Gate stage, create the development handoff flow, add or migrate two-layer todo governance, enforce context-loading and archive-summary rules, or remove copied workflow template packs from a repository. Do not use for ordinary feature implementation unless the workflow governance itself is being changed.
+description: Initialize, audit, or upgrade a repository with a reusable multi-agent engineering workflow. Use when the user asks to establish project development rules, define Architect/Developer/UI/QA/Beta agent responsibilities, add Design and release gates, standardize Conventional Commits and commit planning, create the development handoff flow, add or migrate two-layer todo governance, enforce context-loading and archive-summary rules, or remove copied workflow template packs from a repository. Do not use for ordinary feature implementation unless the workflow governance itself is being changed.
 ---
 
 # Agent Workflow Bootstrap
@@ -41,6 +41,7 @@ description: Initialize, audit, or upgrade a repository with a reusable multi-ag
 - 读取用户目标、项目规则、架构文档、当前 Todo 和必要代码现状。
 - 明确范围、非范围、依赖、风险、兼容性、迁移和回滚要求。
 - 在 Todo 中判断 `Design Required: yes/no`；需要设计时先创建或更新项目设计文档，并完成 Design Gate。
+- 在任务卡中规划逻辑提交边界和 Conventional Commit message；提交规划不构成执行提交的授权。
 - 拆分里程碑与任务卡，指定执行角色和允许修改的模块边界。
 - 写明实现步骤、验收标准、QA 重点、停止条件和需要用户决策的事项。
 - 维护架构决策和两层 Todo 的结构规则。
@@ -63,6 +64,7 @@ description: Initialize, audit, or upgrade a repository with a reusable multi-ag
 
 - 读取项目规则、当前任务卡以及任务卡明确引用的设计和代码。
 - 开工前检查 Design Gate；`Design Required: yes` 但未达到 `approved` 时停止并退回 Architect。
+- 按任务卡的提交边界组织改动；实际范围变化时更新建议，不把无关改动混入同一提交。
 - 复用项目已有类型、服务、组件和测试模式。
 - 实现后端、前端业务逻辑、API、数据流、schema、迁移和必要的聚焦测试。
 - 处理任务适用的安全、权限、异常、边界输入、并发、兼容性和可观测性要求。
@@ -147,7 +149,7 @@ Beta 对简单项目可以作为清单而不是常驻独立角色；对多租户
 2. **Architect 接单**：读取最小上下文，澄清范围、边界、风险和需要用户决定的事项。
 3. **Design 判断**：Architect 在 Todo 标记 `Design Required: yes/no` 并写明理由。局部、无契约变化的修改可以为 `no`；跨模块、新数据模型/API/服务、权限/租户/密钥、迁移/部署/HA 或重大 UI 重构必须为 `yes`。
 4. **Design Gate**：需要设计时，先创建或更新项目设计文档；在 Todo 中记录设计任务、文档路径和 `draft/approved`。设计未批准时不得交给 Developer。
-5. **Architect 建实现任务卡**：更新两层 Todo，引用已批准设计，给出实现步骤、文件/模块范围、验收标准、QA 重点和停止条件。
+5. **Architect 建实现任务卡**：更新两层 Todo，引用已批准设计，给出实现步骤、文件/模块范围、验收标准、QA 重点、停止条件和提交规划。
 6. **Developer 实现**：检查 Design Gate 后，只在任务卡边界内开发，完成聚焦测试并回填实际证据。
 7. **UI 完善**：仅在存在用户界面时执行，保持功能行为不变并回填视觉证据。
 8. **QA 验证**：独立执行验收；失败则退回 Developer、UI 或 Architect，不允许带失败进入 Beta。
@@ -209,6 +211,8 @@ Beta 对简单项目可以作为清单而不是常驻独立角色；对多租户
 **Design Required**: yes | no
 **Design 文档**: <path | —>
 **Design Gate**: not-required | draft | approved
+**提交规划**:
+- `type(scope): subject` — <包含的逻辑范围>
 **依赖/决策**:
 **实现步骤**:
 **验收标准**:
@@ -228,6 +232,29 @@ Beta 对简单项目可以作为清单而不是常驻独立角色；对多租户
 - Design Gate 至少确认：模块边界、数据与 API 契约、安全/租户、失败与并发、兼容/迁移/回滚、验证策略。
 - 实现任务必须依赖设计任务或已批准设计；`draft` 不得进入 Developer。
 - 存量卡不批量补字段；新卡必须执行本规则，存量卡在重新进入开发前由 Architect 按当前风险补齐。
+
+### 提交规划与 Conventional Commits
+
+项目默认使用 Conventional Commits：
+
+```text
+<type>(<scope>): <subject>
+```
+
+常用 `type`：`feat`、`fix`、`docs`、`style`、`refactor`、`test`、`chore`。例如：
+
+```text
+feat(pet): add lost mode activation API
+fix(alerts): correct MQTT topic wildcard matching
+docs(readme): update deployment guide
+```
+
+- Architect 在建卡时规划 1 到 N 个逻辑提交；每项写 message 和包含范围。
+- 一个提交只表达一个可回滚、可审查的逻辑变化；不要按文件机械拆分，也不要把无关清理混入功能提交。
+- `scope` 使用稳定的模块/领域名；`subject` 使用简洁祈使语气，不加句号。破坏性变更使用 `type(scope)!:`，并在正文或 footer 写 `BREAKING CHANGE:`。
+- Developer 按计划组织实现；实际边界变化时在任务卡或报告中更新建议并说明原因。
+- QA 验证的是代码状态，不为了满足提交计划重复测试未变化内容。
+- 提交规划不是 Git 授权。除非用户明确要求，否则 Agent 不执行 stage、commit 或 push；获得授权后，只提交计划范围内且已验证的改动。
 
 ### 状态和所有权
 
@@ -346,9 +373,10 @@ Bootstrap 必须按此模板生成同构 Todo。Upgrade 不强制重命名已有
 2. 把工作流入口合并进现有项目规则，不要创建相互竞争的规则文件。
 3. 生成项目专属角色说明，明确实际目录、命令和不可越界区域。
 4. 建立项目的 design/ADR 入口或确认现有入口；写明哪些变更必须经过 Design Gate。
-5. 建立两层 Todo，并创建第一个可执行里程碑和任务卡；在卡中记录 Design 判断。
-6. 根据风险决定是否加入 Beta 角色和结构守门测试。
-7. 运行最小验证并报告生成文件。
+5. 在项目规则中写入 Conventional Commits 和“提交规划不等于提交授权”。
+6. 建立两层 Todo，并创建第一个可执行里程碑和任务卡；在卡中记录 Design 判断和提交规划。
+7. 根据风险决定是否加入 Beta 角色和结构守门测试。
+8. 运行最小验证并报告生成文件。
 
 不要仅生成空占位符；无法从项目中确定的信息应写成明确待决策项，而不是伪造答案。
 
@@ -361,10 +389,11 @@ Bootstrap 必须按此模板生成同构 Todo。Upgrade 不强制重命名已有
 3. 把总览中的已完成里程碑收敛到子 Todo `## 归档摘要`。
 4. 补充默认上下文装载规则，避免日常加载全部历史。
 5. 给新卡和重新开启的架构级卡加入 Design Required / Design 文档 / Design Gate；不批量改写已完成历史卡。
-6. 把总览收敛到 Canonical Todo 模板：只保留一个决策区，把需求/设计入口移入索引，删除维护流水、底部重复输入区和路线图后的历史摘要。
-7. 将 Security / Release Gate 合并进 Beta 阶段；项目已有独立安全或运维角色时保留其更严格边界。
-8. 只有确认项目专属文档已具备等价规则后，才删除旧的通用模板包。
-9. 更新受影响的结构校验；不需要长期测试时可以删除模板测试脚本，并在 Todo 记录按需验证方法。
+6. 给新卡和重新进入开发的存量卡加入 Conventional Commit 提交规划，不批量重写已完成历史卡。
+7. 把总览收敛到 Canonical Todo 模板：只保留一个决策区，把需求/设计入口移入索引，删除维护流水、底部重复输入区和路线图后的历史摘要。
+8. 将 Security / Release Gate 合并进 Beta 阶段；项目已有独立安全或运维角色时保留其更严格边界。
+9. 只有确认项目专属文档已具备等价规则后，才删除旧的通用模板包。
+10. 更新受影响的结构校验；不需要长期测试时可以删除模板测试脚本，并在 Todo 记录按需验证方法。
 
 禁止：
 
@@ -383,6 +412,7 @@ Bootstrap 必须按此模板生成同构 Todo。Upgrade 不强制重命名已有
 - 检查当前任务状态在总览和子 Todo 中一致。
 - 检查角色文档中包含职责、边界、输入、输出和交接条件。
 - 检查 Todo schema 包含 Design Required、Design 文档和 Design Gate，且 Developer 在设计未批准时必须停止。
+- 检查项目规则和任务卡包含 Conventional Commits 与提交规划，并明确提交仍需用户授权。
 - 检查总览没有纯文档维护流水。
 - 检查总览只有一个用户决策区，没有底部“当前待用户提供 / 决策”等重复区块。
 - 检查路线图后没有已落地决策或日期化评审摘要；需求和设计入口位于台账索引。
@@ -398,6 +428,7 @@ Bootstrap 必须按此模板生成同构 Todo。Upgrade 不强制重命名已有
 - 创建、修改和删除了哪些项目文件。
 - 角色和交接流程如何落地，是否启用 Beta。
 - Design Gate 如何落地，哪些任务被判定为需要设计。
+- 计划了哪些逻辑提交，以及是否实际获得提交/推送授权。
 - 已完成里程碑摘要现在存放在哪里。
 - 是否移除了旧模板包或不必要的测试脚本。
 - 执行了哪些验证及结果。

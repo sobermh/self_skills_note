@@ -9,7 +9,7 @@ Reusable Codex skills maintained for personal and project use.
 - Skill name: `agent-workflow-bootstrap`
 - Path: `skills/agent-workflow-bootstrap/`
 - Purpose: initialize, audit, or incrementally upgrade a project's multi-agent development workflow.
-- Includes: Architect / Developer / UI / QA / Beta roles, Design Gate, two-layer Todo governance, context loading, archive rules, and release gates.
+- Includes: Architect / Developer / UI / QA / Beta roles, Design Gate, Conventional Commit planning, two-layer Todo governance, context loading, archive rules, and release gates.
 
 This Skill establishes project-specific governance documents. It does not copy a reusable template pack into the target project and is not used for ordinary feature implementation.
 
