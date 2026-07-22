@@ -41,7 +41,7 @@ description: Initialize, audit, or upgrade a repository with a reusable multi-ag
 - 读取用户目标、项目规则、架构文档、当前 Todo 和必要代码现状。
 - 明确范围、非范围、依赖、风险、兼容性、迁移和回滚要求。
 - 在 Todo 中判断 `Design Required: yes/no`；需要设计时先创建或更新项目设计文档，并完成 Design Gate。
-- 在任务卡中规划逻辑提交边界和 Conventional Commit message；提交规划不构成执行提交的授权。
+- 在任务卡中规划逻辑提交边界和 Conventional Commit message；提交规划不构成执行提交的授权。实际拆分、检查和 Git 操作必须使用 `commit-convention` Skill；未安装时只输出规划，禁止执行 stage、commit 或 push。
 - 拆分里程碑与任务卡，指定执行角色和允许修改的模块边界。
 - 写明实现步骤、验收标准、QA 重点、停止条件和需要用户决策的事项。
 - 维护架构决策和两层 Todo 的结构规则。
@@ -212,7 +212,7 @@ Beta 对简单项目可以作为清单而不是常驻独立角色；对多租户
 **Design 文档**: <path | —>
 **Design Gate**: not-required | draft | approved
 **提交规划**:
-- `type(scope): subject` — <包含的逻辑范围>
+- `type(scope): english subject` — <逻辑范围与验证要求>
 **依赖/决策**:
 **实现步骤**:
 **验收标准**:
@@ -235,26 +235,25 @@ Beta 对简单项目可以作为清单而不是常驻独立角色；对多租户
 
 ### 提交规划与 Conventional Commits
 
-项目默认使用 Conventional Commits：
+项目默认使用 `commit-convention` Skill 管理提交拆分、message、敏感文件检查、stage、commit 和 push。执行前必须确认该 Skill 可用；不可用时进入 fail-closed：只允许在项目规则和 Todo 中写提交规划，不得执行任何会修改 Git 索引、历史或远程的操作。
+
+下面的兼容基线只用于生成项目规则和任务卡，不是缺少 `commit-convention` 时的提交执行替代品：
 
 ```text
-<type>(<scope>): <subject>
+<type>[(scope)][!]: <English subject, verb first, preferably <= 50 chars>
+
+<中文正文：说明为什么修改以及影响>
 ```
 
-常用 `type`：`feat`、`fix`、`docs`、`style`、`refactor`、`test`、`chore`。例如：
-
-```text
-feat(pet): add lost mode activation API
-fix(alerts): correct MQTT topic wildcard matching
-docs(readme): update deployment guide
-```
-
-- Architect 在建卡时规划 1 到 N 个逻辑提交；每项写 message 和包含范围。
+- 常用 `type`：`feat`、`fix`、`refactor`、`perf`、`docs`、`test`、`build`、`ci`、`style`、`chore`。
+- 标题使用英文祈使语气，正文使用中文说明动机和影响；多点正文使用 `1. 2. 3.` 编号列表。
+- Architect 在建卡时规划 1 到 N 个逻辑提交；每项写英文标题、逻辑范围和验证要求。
 - 一个提交只表达一个可回滚、可审查的逻辑变化；不要按文件机械拆分，也不要把无关清理混入功能提交。
-- `scope` 使用稳定的模块/领域名；`subject` 使用简洁祈使语气，不加句号。破坏性变更使用 `type(scope)!:`，并在正文或 footer 写 `BREAKING CHANGE:`。
+- 破坏性变更使用 `type(scope)!:`，并在 footer 写 `BREAKING CHANGE:` 和迁移方法。
+- 不提交敏感信息、运行产物或无长期价值的生成内容，不添加 `Co-Authored-By` 等署名尾注。
 - Developer 按计划组织实现；实际边界变化时在任务卡或报告中更新建议并说明原因。
 - QA 验证的是代码状态，不为了满足提交计划重复测试未变化内容。
-- 提交规划不是 Git 授权。除非用户明确要求，否则 Agent 不执行 stage、commit 或 push；获得授权后，只提交计划范围内且已验证的改动。
+- 提交规划不是 Git 授权。只有 `commit-convention` 已安装且用户明确要求时，Agent 才能执行 stage、commit 或 push；缺少任一条件都必须停止在规划阶段。
 
 ### 状态和所有权
 
@@ -373,7 +372,7 @@ Bootstrap 必须按此模板生成同构 Todo。Upgrade 不强制重命名已有
 2. 把工作流入口合并进现有项目规则，不要创建相互竞争的规则文件。
 3. 生成项目专属角色说明，明确实际目录、命令和不可越界区域。
 4. 建立项目的 design/ADR 入口或确认现有入口；写明哪些变更必须经过 Design Gate。
-5. 在项目规则中写入 Conventional Commits 和“提交规划不等于提交授权”。
+5. 在项目规则中写入 `commit-convention` 的英文标题/中文正文、原子拆分、敏感内容排除规则，以及“提交规划不等于提交授权”；同时写明 Skill 未安装时禁止 Git 写操作。
 6. 建立两层 Todo，并创建第一个可执行里程碑和任务卡；在卡中记录 Design 判断和提交规划。
 7. 根据风险决定是否加入 Beta 角色和结构守门测试。
 8. 运行最小验证并报告生成文件。
@@ -389,7 +388,7 @@ Bootstrap 必须按此模板生成同构 Todo。Upgrade 不强制重命名已有
 3. 把总览中的已完成里程碑收敛到子 Todo `## 归档摘要`。
 4. 补充默认上下文装载规则，避免日常加载全部历史。
 5. 给新卡和重新开启的架构级卡加入 Design Required / Design 文档 / Design Gate；不批量改写已完成历史卡。
-6. 给新卡和重新进入开发的存量卡加入 Conventional Commit 提交规划，不批量重写已完成历史卡。
+6. 给新卡和重新进入开发的存量卡加入符合 `commit-convention` 的提交规划，不批量重写已完成历史卡。
 7. 把总览收敛到 Canonical Todo 模板：只保留一个决策区，把需求/设计入口移入索引，删除维护流水、底部重复输入区和路线图后的历史摘要。
 8. 将 Security / Release Gate 合并进 Beta 阶段；项目已有独立安全或运维角色时保留其更严格边界。
 9. 只有确认项目专属文档已具备等价规则后，才删除旧的通用模板包。
@@ -412,7 +411,7 @@ Bootstrap 必须按此模板生成同构 Todo。Upgrade 不强制重命名已有
 - 检查当前任务状态在总览和子 Todo 中一致。
 - 检查角色文档中包含职责、边界、输入、输出和交接条件。
 - 检查 Todo schema 包含 Design Required、Design 文档和 Design Gate，且 Developer 在设计未批准时必须停止。
-- 检查项目规则和任务卡包含 Conventional Commits 与提交规划，并明确提交仍需用户授权。
+- 检查项目规则和任务卡包含 `commit-convention` 的英文标题/中文正文、原子提交、敏感内容排除规则与提交规划，并明确 Skill 未安装或用户未授权时禁止 Git 写操作。
 - 检查总览没有纯文档维护流水。
 - 检查总览只有一个用户决策区，没有底部“当前待用户提供 / 决策”等重复区块。
 - 检查路线图后没有已落地决策或日期化评审摘要；需求和设计入口位于台账索引。
