@@ -107,7 +107,7 @@ description: Initialize, audit, or upgrade a repository with a reusable multi-ag
 - 读取项目规则、任务卡、Developer/UI 证据和 Architect 的验收标准。
 - 选择能覆盖变更风险的最小有效测试集。
 - 验证成功路径、失败路径、边界输入、权限、租户隔离、兼容性和回归风险。
-- 对用户可见功能执行必要的运行时或浏览器检查。
+- 对用户可见功能，必须在运行环境以真实角色跑过目标流程验证——单测不可替代；功能 PASS 不等于 PASS，回归安全、隔离、错误处理、数据生命周期或观测任一维度即 FAIL。
 - 输出 `PASS`、`FAIL`、`BLOCKED` 或 `PARTIAL`，附命令、结果、复现、风险和建议负责人。
 
 **不负责**：
