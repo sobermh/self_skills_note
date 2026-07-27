@@ -21,6 +21,15 @@ Use this Skill for dirty-worktree analysis, commit splitting, message generation
 
 This Skill establishes project-specific governance documents. Git write operations require the separately installed `commit-convention` Skill; without it the workflow stops at commit planning.
 
+### Learning Path Teacher
+
+- Skill name: `learning-path-teacher`
+- Path: `skills/learning-path-teacher/`
+- Purpose: create and run structured learning programs for any topic from the learner's baseline to a target level, with staged roadmaps, lesson-by-lesson teaching, exercises, grading records, Todo progress, milestone projects, and production/interview framing.
+- Structure: `SKILL.md` is the teaching workflow entry; detailed reusable templates and curriculum examples live in `references/` (`learning-artifacts.md`, `curriculum-patterns.md`).
+
+Use this Skill when a user says they want to learn a topic, gives a baseline such as "I have Docker basics", asks for a complete path to Kubernetes or another target, wants the assistant to act as a teacher, or needs answer grading and progress tracking.
+
 ## Install With Codex
 
 Ask Codex:
@@ -29,6 +38,8 @@ Ask Codex:
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/commit-convention
 
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/agent-workflow-bootstrap
+
+Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/learning-path-teacher
 ```
 
 After installation, start a new task and invoke it with:
@@ -37,6 +48,8 @@ After installation, start a new task and invoke it with:
 Use $commit-convention to split and commit the current worktree by logical module and stage.
 
 Use $agent-workflow-bootstrap to initialize this repository's project development workflow.
+
+Use $learning-path-teacher to create a complete Kubernetes learning path for someone who already knows Docker basics.
 ```
 
 For an existing project:
@@ -55,6 +68,12 @@ Clone this repository and copy the Skill directory into the local Codex skills d
 
 ~/.codex/skills/agent-workflow-bootstrap/
   SKILL.md
+
+~/.codex/skills/learning-path-teacher/
+  SKILL.md
+  references/
+    learning-artifacts.md
+    curriculum-patterns.md
 ```
 
-Each Skill is intentionally distributed as a single `SKILL.md` file inside its required named directory.
+`commit-convention` and `agent-workflow-bootstrap` are single `SKILL.md` skills; `learning-path-teacher` ships `SKILL.md` plus a `references/` directory that must be copied together.
