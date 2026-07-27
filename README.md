@@ -22,6 +22,15 @@ Use this Skill for dirty-worktree analysis, commit splitting, message generation
 
 The Skill is the single reusable rule source. Each target project keeps only a thin delta file (`develop/dev/workflow.md`, with a `generated-by: agent-workflow v<version>` header) recording project-specific boundaries, verification commands, and constraints — generic role definitions are never copied into projects. Git write operations require the separately installed `commit-convention` Skill; without it the workflow stops at commit planning.
 
+### Learning Path Teacher
+
+- Skill name: `learning-path-teacher`
+- Path: `skills/learning-path-teacher/`
+- Purpose: create and run structured learning programs for any topic from the learner's baseline to a target level, with staged roadmaps, lesson-by-lesson teaching, exercises, grading records, Todo progress, milestone projects, and production/interview framing.
+- Structure: `SKILL.md` is the teaching workflow entry; detailed reusable templates and curriculum examples live in `references/` (`learning-artifacts.md`, `curriculum-patterns.md`).
+
+Use this Skill when a user says they want to learn a topic, gives a baseline such as "I have Docker basics", asks for a complete path to Kubernetes or another target, wants the assistant to act as a teacher, or needs answer grading and progress tracking.
+
 ## Install With Codex
 
 Ask Codex:
@@ -30,6 +39,8 @@ Ask Codex:
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/commit-convention
 
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/agent-workflow
+
+Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/learning-path-teacher
 ```
 
 After installation, start a new task and invoke it with:
@@ -38,6 +49,8 @@ After installation, start a new task and invoke it with:
 Use $commit-convention to split and commit the current worktree by logical module and stage.
 
 Use $agent-workflow to initialize this repository's project development workflow.
+
+Use $learning-path-teacher to create a complete Kubernetes learning path for someone who already knows Docker basics.
 ```
 
 For an existing project:
@@ -67,6 +80,12 @@ Clone this repository and copy the Skill directory into the local Codex skills d
     todo-templates.md
     bootstrap.md
     checklist.md
+
+~/.codex/skills/learning-path-teacher/
+  SKILL.md
+  references/
+    learning-artifacts.md
+    curriculum-patterns.md
 ```
 
-`commit-convention` is a single `SKILL.md`; `agent-workflow` ships `SKILL.md` plus a `references/` directory that must be copied together (the routing layer loads reference files on demand).
+`commit-convention` is a single `SKILL.md`; `agent-workflow` and `learning-path-teacher` ship `SKILL.md` plus a `references/` directory that must be copied together (the routing layer loads reference files on demand).

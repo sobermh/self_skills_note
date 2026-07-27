@@ -1,0 +1,4 @@
+interface:
+  display_name: "Learning Path Teacher"
+  short_description: "Build guided learning paths with grading and Todo"
+  default_prompt: "Use $learning-path-teacher to create a complete learning path, teach lesson by lesson, grade answers, and track progress."
