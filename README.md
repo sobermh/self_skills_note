@@ -14,12 +14,13 @@ Use this Skill for dirty-worktree analysis, commit splitting, message generation
 
 ### Project Development Workflow
 
-- Skill name: `agent-workflow-bootstrap`
-- Path: `skills/agent-workflow-bootstrap/`
-- Purpose: initialize, audit, or incrementally upgrade a project's multi-agent development workflow.
+- Skill name: `agent-workflow` (formerly `agent-workflow-bootstrap`)
+- Path: `skills/agent-workflow/`
+- Purpose: cross-project development workflow harness — governance (bootstrap / upgrade / audit) plus daily role startup (Architect / Developer / UI / QA / Beta).
+- Structure: `SKILL.md` is a thin routing layer (mode table, standard flow, invariants, project-delta contract, version anchor); heavy reference material is loaded on demand from `references/` (`roles.md`, `todo-templates.md`, `bootstrap.md`, `checklist.md`).
 - Includes: Architect / Developer / UI / QA / Beta roles, Design Gate, commit planning, two-layer Todo governance, context loading, archive rules, and release gates.
 
-This Skill establishes project-specific governance documents. Git write operations require the separately installed `commit-convention` Skill; without it the workflow stops at commit planning.
+The Skill is the single reusable rule source. Each target project keeps only a thin delta file (`develop/dev/workflow.md`, with a `generated-by: agent-workflow v<version>` header) recording project-specific boundaries, verification commands, and constraints — generic role definitions are never copied into projects. Git write operations require the separately installed `commit-convention` Skill; without it the workflow stops at commit planning.
 
 ## Install With Codex
 
@@ -28,7 +29,7 @@ Ask Codex:
 ```text
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/commit-convention
 
-Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/agent-workflow-bootstrap
+Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/agent-workflow
 ```
 
 After installation, start a new task and invoke it with:
@@ -36,13 +37,19 @@ After installation, start a new task and invoke it with:
 ```text
 Use $commit-convention to split and commit the current worktree by logical module and stage.
 
-Use $agent-workflow-bootstrap to initialize this repository's project development workflow.
+Use $agent-workflow to initialize this repository's project development workflow.
 ```
 
 For an existing project:
 
 ```text
-Use $agent-workflow-bootstrap to incrementally upgrade this repository's project development workflow. Preserve existing paths, history, and project-specific rules.
+Use $agent-workflow to incrementally upgrade this repository's project development workflow. Preserve existing paths, history, and project-specific rules.
+```
+
+For daily development sessions in a bootstrapped project:
+
+```text
+Use $agent-workflow to start this session as the Developer role for the current task.
 ```
 
 ## Manual Install
@@ -53,8 +60,13 @@ Clone this repository and copy the Skill directory into the local Codex skills d
 ~/.codex/skills/commit-convention/
   SKILL.md
 
-~/.codex/skills/agent-workflow-bootstrap/
+~/.codex/skills/agent-workflow/
   SKILL.md
+  references/
+    roles.md
+    todo-templates.md
+    bootstrap.md
+    checklist.md
 ```
 
-Each Skill is intentionally distributed as a single `SKILL.md` file inside its required named directory.
+`commit-convention` is a single `SKILL.md`; `agent-workflow` ships `SKILL.md` plus a `references/` directory that must be copied together (the routing layer loads reference files on demand).
