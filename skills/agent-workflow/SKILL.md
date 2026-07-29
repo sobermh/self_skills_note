@@ -5,7 +5,7 @@ description: Multi-agent engineering workflow harness for project development. T
 
 # Agent Workflow
 
-**version: 1.2**
+**version: 1.2.1**
 
 本 Skill 是跨项目复用的开发工作流引擎，也是**唯一的可复用规则源**：角色职责、流程、台账 schema、Design Gate、提交规划规则都只在这里维护。目标项目不复制通用规则，只保留一份薄 delta 文件（`develop/dev/workflow.md`，见下文契约）记录项目专属边界，以及项目自己的 Todo 台账。禁止把通用模板目录复制进项目或制造第二套模板源。
 
@@ -51,7 +51,7 @@ description: Multi-agent engineering workflow harness for project development. T
 - **不重写历史**。不为统一格式重写历史任务卡；不删除历史摘要，除非已移入对应子 Todo 的归档区。
 - **单一规则源**。项目里不落地通用模板包（`templates/agent-workflow/` 之类）；发现即在 upgrade 中删除（先确认项目文档已具备等价规则）。
 - **不越权**。不覆盖用户未提交改动；不输出秘密、真实凭据和敏感部署配置。
-- **反馈回路（lessons loop）**。会话中暴露的流程问题——规则模糊、边界踩坑、harness 缺口——不许随会话蒸发：项目专属教训沉淀进项目 delta 的「项目特殊约束」，跨项目的方法论教训作为 Skill 改进建议报告给用户（由用户决定是否升级 Skill 与版本号）。判据：同一个坑第二次出现，说明第一次没有沉淀。
+- **反馈回路（lessons loop）**。会话中暴露的流程问题——规则模糊、边界踩坑、harness 缺口——不许随会话蒸发：项目专属教训沉淀进项目 delta 的「项目特殊约束」，跨项目的方法论教训作为 Skill 改进建议报告给用户（由用户决定是否升级 Skill 与版本号）。判据：同一个坑第二次出现，说明第一次没有沉淀。拿不准是否跨项目的教训先落 delta（低成本，不需审批）；audit 时回看各项目 delta，同一教训出现在多个项目 delta 即为晋升信号（rule of three），报告用户决定是否收编进 Skill。
 
 ## 项目 delta 文件契约
 
@@ -90,6 +90,7 @@ bootstrap/upgrade 在目标项目生成**一份** `develop/dev/workflow.md`（�
 
 ## Changelog
 
+- **1.2.1** — lessons loop 补晋升通道：拿不准归属的教训先落 delta；audit 回看各 delta，多项目重复出现的教训（rule of three）列为晋升候选报告用户。
 - **1.2** — 角色对齐主流四件套（planner/coder/reviewer/tester）：UI 从平级角色降为 Developer 的可选视觉子阶段（UI pass，视觉量大才单开会话）；QA 补上 reviewer 职责（先 diff 代码审查后行为验收，质量问题同样可 FAIL）；Beta 默认定位为里程碑收口的 release-checklist 卡而非常驻角色（高风险项目可升格）。
 - **1.1** — 一卡收口一提交（禁攒批混合工作树；提交点按隔离形态：主分支直接工作 → qa-pass 后，branch/worktree 隔离 → 可前移 implemented）；QA 默认 fresh-context 隔离（新会话/subagent，只喂卡+验收+diff）；Architect 验收标准测试化（spec-driven，可断言项落测试骨架）；新增反馈回路不变量（教训沉淀进 delta / Skill 建议，同坑不二踩）。
 - **1.0** — 从单文件 `agent-workflow-bootstrap` 重构为路由层 + references 结构；新增 role-startup 模式与项目 delta 契约。
