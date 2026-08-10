@@ -67,6 +67,92 @@ By the end, the learner should be able to:
 - Present at least one portfolio-level project.
 ~~~
 
+## 2-Hour Production-Readiness Sprint Template
+
+Use this when the learner requests a fast "2-hour" path or explicitly wants production-level readiness.
+If the learner asks not to split lessons, write this as one detailed Markdown file.
+
+~~~markdown
+# <Topic> 2-Hour Production-Readiness Sprint
+
+> Goal: Work against production-level standards for 2 hours: build the full mental model, identify the core mechanisms, avoid the main production traps, and leave with a concrete implementation plan or skeleton.
+
+## Reality Check
+
+This sprint is designed to make the learner ready to start production-style development under review. Independent production ownership still requires project practice, debugging, evaluation, and incident experience.
+
+## Schedule
+
+| Time | Focus | Output |
+|---|---|---|
+| 0-8 min | Baseline and target | Scope cuts |
+| 8-25 min | Architecture map | Full-system diagram |
+| 25-45 min | Core runtime | Must-know mechanisms |
+| 45-65 min | Safety and data boundaries | Permissions, validation, evidence |
+| 65-85 min | Production workflow | State, retries, approval, audit |
+| 85-105 min | Minimal implementation | Production-shaped skeleton |
+| 105-115 min | Development kickoff | File structure and task list |
+| 115-120 min | Readiness gate | Pass/fail grade |
+
+## Must Know
+
+- <concept>
+
+## Can Skip For Now
+
+- <deep topic>
+
+## Dangerous To Ignore
+
+- <risk>
+
+## Production-Readiness Gate
+
+- [ ] I can explain the architecture and responsibility boundaries.
+- [ ] I can describe the core runtime loop or workflow.
+- [ ] I can name validation, permission, and audit requirements.
+- [ ] I can explain the main failure modes and recovery strategy.
+- [ ] I can define acceptance tests before implementation.
+
+## Build Now
+
+1. <step>
+2. <step>
+
+## Next 7 Days
+
+- Day 1: <practice>
+- Day 2: <practice>
+~~~
+
+## Single-Document Intensive Tutorial Requirements
+
+Use these requirements when the learner says "教程放到一个文档", "不要分开", "2 小时看完学完", or similar.
+
+The single document must contain:
+
+- Title and realistic target.
+- Embedded progress Todo.
+- 2-hour time-boxed schedule.
+- Detailed tutorial body in reading order.
+- Production-grade architecture or workflow map.
+- Minimal implementation skeleton or project structure.
+- Safety, permissions, observability, evaluation, and deployment checklist.
+- Final pass/fail assessment questions.
+- A place to append learner answers, evaluation, missing points, and standard answers.
+
+Recommended path:
+
+```text
+docs/learning/<topic-slug>/2h_production_readiness_tutorial.md
+```
+
+If the repository already has a simpler docs layout, use a clear single-file path such as:
+
+```text
+docs/<topic-slug>_2h_production_tutorial.md
+```
+
 ## Todo Template
 
 ~~~markdown

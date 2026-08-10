@@ -1,6 +1,6 @@
 ---
 name: learning-path-teacher
-description: Create and run structured learning programs for any technical or professional topic. Use when the user wants to learn something from their current baseline to a target level, asks for a complete learning path, wants lesson-by-lesson teaching, exercises, grading, progress tracking, project checkpoints, or reusable teacher-agent behavior; examples include "我有 Docker 基础，想学 K8s", "从零学 Agent", "给我制定后端学习路线并监督我".
+description: Create and run structured learning programs for any technical or professional topic, including fast 2-hour crash courses, 2-hour production-readiness sprints, single-document intensive tutorials, and longer lesson-by-lesson tracks. Use when the user wants to learn something from their current baseline to a target level, asks for a complete learning path, wants a "2 小时吃透/快速掌握/马上开始开发/2 小时具备生产级别熟练度/教程放到一个文档不要分开" intensive path, lesson-by-lesson teaching, exercises, grading, progress tracking, project checkpoints, or reusable teacher-agent behavior; examples include "我有 Docker 基础，想学 K8s", "2 小时掌握 Agent 然后开发", "2 小时具备生产级 Agent 开发能力", "写一个单文件教程让我 2 小时学完", "从零学 Agent", "给我制定后端学习路线并监督我".
 ---
 
 # Learning Path Teacher
@@ -18,6 +18,7 @@ First decide the task mode:
 | `grade` | Provides answers to exercises | Grade, write user answers and standard answers to the lesson record, update Todo, then start or prepare the next lesson. |
 | `project` | Reaches a milestone project | Create a project spec, demo/lab, acceptance questions, and grading record. |
 | `resume` | Wants to continue | Read existing Todo and current lesson, then continue from the recorded state. |
+| `crash-2h` | Wants to learn a topic in about 2 hours, "吃透", "速成", "快速掌握", "生产级别熟练度", "不要分开", "单文档教程", or start development immediately | Run the 2-hour production-readiness sprint: compress the whole map, core mechanisms, minimum viable lab, production boundaries, pass/fail gate, and next development steps. Use one consolidated tutorial document when requested. |
 
 ## Core Workflow
 
@@ -28,6 +29,7 @@ First decide the task mode:
    - `docs/learning/<topic-slug>/TODO.md`
    - `docs/learning/<topic-slug>/lessons/NN_<topic>.md`
    - `docs/learning/<topic-slug>/projects/NN_<project>.md`
+   - For a 2-hour or "single document" request, prefer one file such as `docs/learning/<topic-slug>/2h_production_readiness_tutorial.md` with embedded Todo, schedule, full tutorial, build checklist, and assessment.
 4. Teach one lesson at a time. Do not dump the entire course as one giant answer.
 5. End each lesson with exercises that require the learner to answer in their own words.
 6. When the learner answers, grade before moving on.
@@ -36,6 +38,39 @@ First decide the task mode:
 9. When code or labs are created, run the smallest useful verification and report the result.
 
 When the target project already has a learning-document convention, follow that convention instead of forcing the default paths.
+
+## 2-Hour Crash Mode
+
+Use this mode when the user asks to master a broad topic in about 2 hours, wants production-level readiness after a short intensive session, or wants to start development immediately.
+
+Set the expectation clearly:
+
+```text
+In 2 hours, aim at production-level standards: build the full mental model, know the critical implementation boundaries, produce a production-shaped development plan or skeleton, and pass a hard diagnostic gate. Label the outcome as "ready to start production-style development under review" unless the learner has already demonstrated independent production experience.
+```
+
+Default 2-hour structure:
+
+| Time | Focus | Output |
+|---|---|---|
+| 0-8 min | Baseline and target | Confirm current skill, final outcome, and what to skip. |
+| 8-25 min | Full map | Explain the whole system in one diagram or concise architecture map. |
+| 25-45 min | Core runtime | Teach the 3-5 mechanisms that make the topic work. |
+| 45-65 min | Safety and data boundaries | Cover validation, permissions, evidence, and failure handling. |
+| 65-85 min | Production workflow | Cover state, retries, human approval, observability, and audit. |
+| 85-105 min | Minimum viable implementation | Build or outline the smallest production-shaped version. |
+| 105-115 min | Development kickoff | Produce file structure, task list, commands, and acceptance checks. |
+| 115-120 min | Hard assessment | Ask 5-8 diagnostic questions and grade against a production-readiness gate. |
+
+For crash mode:
+
+- Prefer compact architecture maps, tables, and runnable skeletons over long prose.
+- When the user asks for one document or says not to split lessons, produce a single detailed tutorial document instead of separate lesson files.
+- The single document should include embedded Todo, time-boxed sections, production-grade knowledge, minimal implementation skeleton, risk checklist, acceptance tests, and grading questions.
+- Teach "what matters for development first"; defer deep theory to a follow-up plan.
+- Include a "must know / can skip for now / dangerous to ignore" section.
+- If the learner asks for "production-level proficiency", teach with a production code review mindset: architecture, risk boundaries, testability, rollback, audit, cost, and failure modes.
+- Use a pass/fail gate. Passing means the learner can start production-style implementation under review; independent ownership requires real project practice and incident/debugging experience.
 
 ## Teaching Standards
 
@@ -81,7 +116,7 @@ If an answer is incomplete but the core direction is correct, mark the lesson pa
 Load references only when needed:
 
 - Read `references/learning-artifacts.md` when creating or updating learning plans, lesson files, Todo files, project files, or grading records.
-- Read `references/curriculum-patterns.md` when designing a new curriculum, estimating stages, or adapting to examples such as Docker -> Kubernetes.
+- Read `references/curriculum-patterns.md` when designing a new curriculum, estimating stages, adapting to examples such as Docker -> Kubernetes, or running 2-hour crash mode.
 
 ## Completion Report
 
