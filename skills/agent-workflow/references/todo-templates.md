@@ -44,6 +44,7 @@
 **Design Required**: yes | no
 **Design 文档**: <path | —>
 **Design Gate**: not-required | draft | approved
+**关联 BUG**: <BUG IDs | —>
 **提交规划**:
 - `type(scope): english subject` — <逻辑范围与验证要求>
 **依赖/决策**:
@@ -55,6 +56,8 @@
 ```
 
 项目已有成熟 schema 时保留原字段，只补齐缺失的职责、上下文和归档规则，不强制改名。
+
+`关联 BUG` 只保存 ID。现象、根因、修复和回归历史放在 Bug 里程碑明细；任务卡记录实施范围与验收，不复制同一份缺陷正文。Bug 台账结构和状态所有权见 `references/bug-ledger.md`。
 
 ## Design Gate 规则
 
@@ -107,6 +110,8 @@
 2. Todo 总览。
 3. 当前或用户明确指定的里程碑子 Todo。
 4. 当前任务卡明确引用的设计、BUG、测试和代码文件。
+
+处理缺陷时额外读取 Bug 总索引、当前里程碑 Bug 文件和明确点名的记录；不得默认加载全部历史 Bug 明细。
 
 已完成里程碑属于归档上下文。只有当前任务明确依赖其历史决策、BUG、实现边界或证据时才打开，不能每次把全部历史 Todo 丢给 Agent。
 

@@ -8,6 +8,7 @@
 - 架构与开发边界文档。
 - 现有工作流 delta（`develop/dev/workflow.md`）或旧版角色文件（`develop/dev/agents/`、`docs/agents/` 或同类）。
 - Todo 总览、当前里程碑明细和台账 schema。
+- Bug 索引、当前里程碑明细、现有缺陷格式和引用方式。
 - 与治理结构有关的测试或校验脚本。
 - 当前 `git status` 与本次相关 diff；保留用户已有改动。
 
@@ -21,6 +22,7 @@
 
 - 项目工作流 delta：`develop/dev/workflow.md`（**单文件**，schema 见 SKILL.md「项目 delta 文件契约」）。只有角色文件需要直接作为不同平台的独立启动 Prompt，或角色之间存在显著不同的访问/分发边界时，才拆成 `develop/dev/agents/` 多文件形式——此时每份文件仍只写项目 delta，不复制通用角色骨架。
 - 两层 Todo：`develop/dev/todo/`（总览 + 各里程碑明细 + schema `README.md`）。
+- 两层 Bug 台账：`develop/bug/`（薄入口 `README.md` + 总索引 `todo-bug.md` + 首次登记时创建的里程碑明细）；通用 schema 见 `references/bug-ledger.md`。
 - 结构守门测试（按需）：`develop/dev/tests/`。
 - 需求 / 发布清单 / runbook：`develop/dev/requirements/`、`develop/dev/runbooks/`。
 
@@ -29,6 +31,7 @@
 - 在 `AGENTS.md`、`CLAUDE.md` 或同类项目规则中加入工作流入口（指向本 Skill 与 delta 文件）和上下文装载规则。
 - `develop/dev/workflow.md` delta 文件。
 - Todo schema/README、总览文件和当前里程碑子 Todo。
+- Bug 台账薄入口和全局索引；里程碑明细按首次登记创建。
 - 必要的架构决策、测试计划或发布清单链接。
 
 这些都是项目专属的已应用文档，不是可继续复制的模板包。禁止在目标项目保留 `templates/agent-workflow/` 一类通用模板目录作为第二数据源。
@@ -50,9 +53,10 @@
 3. 生成 `develop/dev/workflow.md` delta（含 `generated-by: agent-workflow v<version>` 头与 Skill 缺席 fail-closed 声明），按角色写明实际目录、命令、不可越界区域——只写项目专属内容，通用职责留在本 Skill。
 4. 建立项目的 design/ADR 入口或确认现有入口；写明哪些变更必须经过 Design Gate。
 5. 在项目规则中写入 `commit-convention` 的英文标题/中文正文、原子拆分、敏感内容排除规则，以及"提交规划不等于提交授权"；同时写明 Skill 未安装时禁止 Git 写操作。
-6. 建立两层 Todo，并创建第一个可执行里程碑和任务卡；在卡中记录 Design 判断和提交规划。
-7. 根据风险决定是否加入 Beta 角色和结构守门测试。
-8. 运行最小验证并报告生成文件。
+6. 建立两层 Todo，并创建第一个可执行里程碑和任务卡；在卡中记录 Design 判断、关联 BUG 和提交规划。
+7. 按 `references/bug-ledger.md` 建立两层 Bug 台账入口与空索引，写明状态所有权；里程碑明细在首次登记时创建。
+8. 根据风险决定是否加入 Beta 角色和 Todo/Bug 结构守门测试。
+9. 运行最小验证并报告生成文件。
 
 不要仅生成空占位符；无法从项目中确定的信息应写成明确待决策项，而不是伪造答案。
 
@@ -60,17 +64,18 @@
 
 旧项目升级：
 
-1. 盘点规则、项目工作流/角色文档、Todo、历史里程碑、结构测试和旧模板目录；多份角色文件高度重复时收敛为单份 `develop/dev/workflow.md` delta（通用骨架上移到本 Skill 覆盖，项目只留边界/命令/约束）。
+1. 盘点规则、项目工作流/角色文档、Todo、Bug/缺陷记录、历史里程碑、结构测试和旧模板目录；多份角色文件高度重复时收敛为单份 `develop/dev/workflow.md` delta（通用骨架上移到本 Skill 覆盖，项目只留边界/命令/约束）。
 2. 对比本 Skill 的职责与流程，只补缺失内容，保留有效项目定制。
 3. 把总览中的已完成里程碑收敛到子 Todo `## 归档摘要`。
 4. 补充默认上下文装载规则，避免日常加载全部历史。
 5. 给新卡和重新开启的架构级卡加入 Design Required / Design 文档 / Design Gate；不批量改写已完成历史卡。
 6. 给新卡和重新进入开发的存量卡加入符合 `commit-convention` 的提交规划，不批量重写已完成历史卡。
 7. 把总览收敛到 Canonical Todo 模板：只保留一个决策区，把需求/设计入口移入索引，删除维护流水、底部重复输入区和路线图后的历史摘要。
-8. 将 Security / Release Gate 合并进 Beta 阶段；项目已有独立安全或运维角色时保留其更严格边界。
-9. 只有确认项目专属文档已具备等价规则后，才删除旧的通用模板包。
-10. 更新受影响的结构校验；不需要长期测试时可以删除模板测试脚本，并在 Todo 记录按需验证方法。
-11. 收敛旧版多角色文件时，逐份核对其中的项目专属内容已全部迁入 delta 文件后再删除；升级 delta 头部的 `generated-by` 版本号。
+8. 按 `references/bug-ledger.md` 收敛缺陷记录为“短索引 + 里程碑明细”；保留已有 ID、路径、状态和历史，只约束未来写入，不批量重写旧记录。
+9. 将 Security / Release Gate 合并进 Beta 阶段；项目已有独立安全或运维角色时保留其更严格边界。
+10. 只有确认项目专属文档已具备等价规则后，才删除旧的通用模板包。
+11. 更新受影响的 Todo/Bug 结构校验；不需要长期测试时可以删除模板测试脚本，并在台账记录按需验证方法。
+12. 收敛旧版多角色文件时，逐份核对其中的项目专属内容已全部迁入 delta 文件后再删除；升级 delta 头部的 `generated-by` 版本号。
 
 禁止：
 
@@ -90,6 +95,7 @@
 - Design Gate 如何落地，哪些任务被判定为需要设计。
 - 计划了哪些逻辑提交，以及是否实际获得提交/推送授权。
 - 已完成里程碑摘要现在存放在哪里。
+- Bug 台账存放位置、状态所有权、是否迁移旧记录及守门方式。
 - 是否移除了旧模板包或不必要的测试脚本。
 - 执行了哪些验证及结果。
 - 仍需用户决定的发布、业务或高风险事项。

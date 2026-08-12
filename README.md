@@ -17,8 +17,8 @@ Use this Skill for dirty-worktree analysis, commit splitting, message generation
 - Skill name: `agent-workflow` (formerly `agent-workflow-bootstrap`)
 - Path: `skills/agent-workflow/`
 - Purpose: cross-project development workflow harness — governance (bootstrap / upgrade / audit) plus daily role startup (Architect / Developer / UI / QA / Beta).
-- Structure: `SKILL.md` is a thin routing layer (mode table, standard flow, invariants, project-delta contract, version anchor); heavy reference material is loaded on demand from `references/` (`roles.md`, `todo-templates.md`, `bootstrap.md`, `checklist.md`).
-- Includes: Architect / Developer / UI / QA / Beta roles, Design Gate, commit planning, two-layer Todo governance, context loading, archive rules, and release gates.
+- Structure: `SKILL.md` is a thin routing layer (mode table, standard flow, invariants, project-delta contract, version anchor); heavy reference material is loaded on demand from `references/` (`roles.md`, `todo-templates.md`, `bug-ledger.md`, `bootstrap.md`, `checklist.md`).
+- Includes: Architect / Developer / UI / QA / Beta roles, Design Gate, commit planning, two-layer Todo and Bug governance, defect lifecycle ownership, context loading, archive rules, and release gates.
 
 The Skill is the single reusable rule source. Each target project keeps only a thin delta file (`develop/dev/workflow.md`, with a `generated-by: agent-workflow v<version>` header) recording project-specific boundaries, verification commands, and constraints — generic role definitions are never copied into projects. Git write operations require the separately installed `commit-convention` Skill; without it the workflow stops at commit planning.
 
@@ -78,6 +78,7 @@ Clone this repository and copy the Skill directory into the local Codex skills d
   references/
     roles.md
     todo-templates.md
+    bug-ledger.md
     bootstrap.md
     checklist.md
 
