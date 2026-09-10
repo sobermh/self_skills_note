@@ -31,6 +31,15 @@ The Skill is the single reusable rule source. Each target project keeps only a t
 
 Use this Skill when a user says they want to learn a topic, gives a baseline such as "I have Docker basics", asks for a complete path to Kubernetes or another target, wants the assistant to act as a teacher, or needs answer grading and progress tracking.
 
+### Claude/Codex Memory Sync
+
+- Skill name: `claude-codex-memory-sync`
+- Path: `skills/claude-codex-memory-sync/`
+- Purpose: bidirectionally read, compare, and hand off same-project memory between Claude Code and Codex, including same-name session lookup and safe Markdown write-back.
+- Structure: `SKILL.md` is the sync workflow entry; `scripts/find_memory.py` locates Claude/Codex project memory and session candidates; `references/storage-layout.md` documents the local storage layout.
+
+Use this Skill when a Codex task needs to read the same project's Claude Code memory, when Claude Code needs to find the matching Codex session, or when either side needs a safe Markdown handoff without mutating Codex internal sqlite files.
+
 ## Install With Codex
 
 Ask Codex:
@@ -41,6 +50,8 @@ Use $skill-installer to install the skill from https://github.com/sobermh/self_s
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/agent-workflow
 
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/learning-path-teacher
+
+Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/claude-codex-memory-sync
 ```
 
 After installation, start a new task and invoke it with:
@@ -51,6 +62,8 @@ Use $commit-convention to split and commit the current worktree by logical modul
 Use $agent-workflow to initialize this repository's project development workflow.
 
 Use $learning-path-teacher to create a complete Kubernetes learning path for someone who already knows Docker basics.
+
+Use $claude-codex-memory-sync to read the same-project Claude Code memory for this Codex task.
 ```
 
 For an existing project:
@@ -87,6 +100,15 @@ Clone this repository and copy the Skill directory into the local Codex skills d
   references/
     learning-artifacts.md
     curriculum-patterns.md
+
+~/.codex/skills/claude-codex-memory-sync/
+  SKILL.md
+  scripts/
+    find_memory.py
+  references/
+    storage-layout.md
+  agents/
+    openai.yaml
 ```
 
-`commit-convention` is a single `SKILL.md`; `agent-workflow` and `learning-path-teacher` ship `SKILL.md` plus a `references/` directory that must be copied together (the routing layer loads reference files on demand).
+`commit-convention` is a single `SKILL.md`; `agent-workflow` and `learning-path-teacher` ship `SKILL.md` plus a `references/` directory that must be copied together (the routing layer loads reference files on demand). `claude-codex-memory-sync` ships `SKILL.md`, its helper script, storage reference, and UI metadata; copy the full directory so both lookup and write-back modes work.

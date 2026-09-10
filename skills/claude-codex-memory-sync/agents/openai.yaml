@@ -1,0 +1,3 @@
+interface:
+  display_name: "Claude/Codex Memory Sync"
+  short_description: "Bidirectionally sync same-project Claude Code and Codex memory"
