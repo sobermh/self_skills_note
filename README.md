@@ -44,9 +44,9 @@ Use this Skill when a Codex task needs to read the same project's Claude Code me
 
 - Skill names: `plugin-testcases-create`, `plugin-testcases-exec`
 - Paths: `skills/tokens/TokensCowork/plugin-testcases-create/`, `skills/tokens/TokensCowork/plugin-testcases-exec/`
-- Purpose: create the standard test inventory and runner in each TokensCowork plugin, then discover and execute all pinned plugin suites from the build-only outer project.
+- Purpose: create the standard test inventory and runner for a specified TokensCowork plugin, then execute one, multiple, or all pinned plugin suites from the build-only outer project.
 
-Use `plugin-testcases-create` inside an individual plugin repository. Use `plugin-testcases-exec` from the TokensCowork outer project after plugin or upstream upgrades.
+Use `plugin-testcases-create` for a specified plugin, defaulting to the current plugin repository. Use `plugin-testcases-exec` from the TokensCowork outer project for explicitly selected plugins or all pinned plugins after plugin or upstream upgrades.
 
 ## Install With Codex
 

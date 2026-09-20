@@ -1,11 +1,11 @@
 ---
 name: plugin-testcases-create
-description: Create or update the standardized test case inventory and execution entrypoint for a TokensCowork plugin. Use when asked to add plugin test cases or maintain test/test_cases.csv and test/run-test-cases.mjs in an individual plugin repository.
+description: Create or update the standardized test case inventory and execution entrypoint for a specified TokensCowork plugin. Use when asked to add plugin test cases or maintain test/test_cases.csv and test/run-test-cases.mjs for a named plugin or the current plugin repository.
 ---
 
 # TokensCowork Plugin Test Cases
 
-Use this Skill in an individual TokensCowork plugin repository.
+Use this Skill for one specified TokensCowork plugin. If the user provides a plugin name, repository, or path, resolve and modify only that plugin. If no target is provided, use the current plugin repository. Never create test cases in unrelated plugins.
 
 Keep these fixed entry files:
 
@@ -34,4 +34,4 @@ Use these status values consistently:
 
 Expose `npm run test:cases` when the plugin has `package.json`. Add candidate-mode support only when the plugin genuinely has a packaged or Electron candidate environment.
 
-Run the new entrypoint before finishing. Do not change product behavior merely to satisfy tests. Do not commit, push, publish, or update an outer-project pin unless the user asks.
+Run the new entrypoint in the target plugin before finishing. Report the resolved plugin name and path. Do not change product behavior merely to satisfy tests. Do not commit, push, publish, or update an outer-project pin unless the user asks.
