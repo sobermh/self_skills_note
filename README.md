@@ -40,6 +40,14 @@ Use this Skill when a user says they want to learn a topic, gives a baseline suc
 
 Use this Skill when a Codex task needs to read the same project's Claude Code memory, when Claude Code needs to find the matching Codex session, or when either side needs a safe Markdown handoff without mutating Codex internal sqlite files.
 
+### TokensCowork Plugin Test Cases
+
+- Skill names: `plugin-testcases-create`, `plugin-testcases-exec`
+- Paths: `skills/tokens/TokensCowork/plugin-testcases-create/`, `skills/tokens/TokensCowork/plugin-testcases-exec/`
+- Purpose: create the standard test inventory and runner in each TokensCowork plugin, then discover and execute all pinned plugin suites from the build-only outer project.
+
+Use `plugin-testcases-create` inside an individual plugin repository. Use `plugin-testcases-exec` from the TokensCowork outer project after plugin or upstream upgrades.
+
 ## Install With Codex
 
 Ask Codex:
@@ -52,6 +60,10 @@ Use $skill-installer to install the skill from https://github.com/sobermh/self_s
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/learning-path-teacher
 
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/claude-codex-memory-sync
+
+Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/tokens/TokensCowork/plugin-testcases-create
+
+Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/tokens/TokensCowork/plugin-testcases-exec
 ```
 
 After installation, start a new task and invoke it with:
@@ -64,6 +76,10 @@ Use $agent-workflow to initialize this repository's project development workflow
 Use $learning-path-teacher to create a complete Kubernetes learning path for someone who already knows Docker basics.
 
 Use $claude-codex-memory-sync to read the same-project Claude Code memory for this Codex task.
+
+Use $plugin-testcases-create to create the standardized test cases for this TokensCowork plugin.
+
+Use $plugin-testcases-exec to execute all pinned plugin test cases from TokensCowork.
 ```
 
 For an existing project:
@@ -109,6 +125,12 @@ Clone this repository and copy the Skill directory into the local Codex skills d
     storage-layout.md
   agents/
     openai.yaml
+
+~/.codex/skills/plugin-testcases-create/
+  SKILL.md
+
+~/.codex/skills/plugin-testcases-exec/
+  SKILL.md
 ```
 
-`commit-convention` is a single `SKILL.md`; `agent-workflow` and `learning-path-teacher` ship `SKILL.md` plus a `references/` directory that must be copied together (the routing layer loads reference files on demand). `claude-codex-memory-sync` ships `SKILL.md`, its helper script, storage reference, and UI metadata; copy the full directory so both lookup and write-back modes work.
+`commit-convention`, `plugin-testcases-create`, and `plugin-testcases-exec` are single `SKILL.md` skills; `agent-workflow` and `learning-path-teacher` ship `SKILL.md` plus a `references/` directory that must be copied together (the routing layer loads reference files on demand). `claude-codex-memory-sync` ships `SKILL.md`, its helper script, storage reference, and UI metadata; copy the full directory so both lookup and write-back modes work.
