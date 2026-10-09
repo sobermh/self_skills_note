@@ -4,6 +4,8 @@
 
 ## 编写与完善功能用例
 
+标准入口用于每次插件更新完成后的提交前回归。保持快速、确定的本地执行：逻辑使用单元测试与 mock，流程使用本地服务与临时文件，上游边界保留真实依赖契约测试。不为提速跳过兼容用例、减少有效断言或把不完整结果记为通过；不把真实安装、完整桌面启动、打安装包或公网服务调用加入默认回归。性能问题先测量慢用例并定位原因，再按需优化夹具；仅在确认不共享状态时并行执行。缺依赖应明确报未完成，不能悄悄跳过。
+
 Resolve the named plugin or current plugin repository. Modify only that scope in its independent repository; outer-project submodules are read-only.
 
 Keep two entry files: `test/test_cases.csv` and `test/run-test-cases.mjs`. Expose `npm run test:cases` where applicable.
