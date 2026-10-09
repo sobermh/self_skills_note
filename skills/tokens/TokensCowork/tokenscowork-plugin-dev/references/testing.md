@@ -4,8 +4,6 @@
 
 ## 编写与完善功能用例
 
-标准入口在每次插件更新完成后运行一次。保持快速、确定的本地执行：逻辑使用单元测试与 mock，流程使用本地服务与临时文件，上游边界保留真实依赖契约测试。不为提速跳过兼容用例、减少有效断言或把不完整结果记为通过；不把真实安装、完整桌面启动、打安装包或公网服务调用加入默认回归。性能问题先测量慢用例并定位原因，再按需优化夹具；仅在确认不共享状态时并行执行。缺依赖应明确报未完成，不能悄悄跳过。
-
 Resolve the named plugin or current plugin repository. Modify only that scope in its independent repository; outer-project submodules are read-only.
 
 Keep two entry files: `test/test_cases.csv` and `test/run-test-cases.mjs`. Expose `npm run test:cases` where applicable.
@@ -37,8 +35,6 @@ Keep standalone checks independent of an outer checkout. Resolve genuine upstrea
 Do not commit, push, publish or update outer pins unless requested.
 
 ## 仅执行功能回归
-
-外层整体回归由外层脚本开关按需触发，默认关闭；开关开启时执行所有具有标准入口的固定插件，汇总通过、失败和未完成结果。开关变量是外层流程控制，不是插件脚本的宿主路径参数；`TOKENS_HARNESS_ROOT` 等路径参数继续用于定位真实上游依赖。没有接入开关的外层脚本不能仅靠设置变量触发测试。用户明确要求执行回归时直接执行指定范围，不因默认关闭而跳过用户请求。
 
 Resolve scope against the outer manifest and pins: one named plugin, explicitly listed plugins, or all pinned plugins with the standard entrypoint when requested. With no scope, use all such pinned plugins in the outer project, or only the current plugin in an independent plugin repository. Report unresolved names instead of silently expanding scope.
 
