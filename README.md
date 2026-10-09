@@ -45,17 +45,11 @@ Use this Skill when a Codex task needs to read the same project's Claude Code me
 - Skill name: `tokenscowork-plugin-dev`
 - Path: `skills/tokens/TokensCowork/tokenscowork-plugin-dev/`
 - Purpose: develop and maintain independent TokensCowork npm plugins, including host compatibility, bilingual metadata, functional regression and private registry releases.
-- Structure: `SKILL.md` plus `references/layout.md`, `references/runtime.md` and `references/release.md`.
+- Structure: `SKILL.md` plus `references/layout.md`, `references/runtime.md`, `references/testing.md` and `references/release.md`.
 
 Includes coordination for concurrent changes, two-file functional test organization, outer-project adaptation checks and release artifact verification. Git and release actions follow the user-authorized scope.
 
-### TokensCowork Plugin Test Cases
-
-- Skill names: `plugin-testcases-create`, `plugin-testcases-exec`
-- Paths: `skills/tokens/TokensCowork/plugin-testcases-create/`, `skills/tokens/TokensCowork/plugin-testcases-exec/`
-- Purpose: create the standard test inventory and runner for a specified TokensCowork plugin, then execute one, multiple, or all pinned plugin suites from the build-only outer project.
-
-Use `plugin-testcases-create` for a specified plugin, defaulting to the current plugin repository. Use `plugin-testcases-exec` from the TokensCowork outer project for explicitly selected plugins or all pinned plugins after plugin or upstream upgrades.
+Use this single Skill for plugin development, writing regression cases, execution-only regression, and authorized CI/release work. Load the matching reference for the requested mode; running tests does not imply permission to edit or publish.
 
 ## Install With Codex
 
@@ -71,10 +65,6 @@ Use $skill-installer to install the skill from https://github.com/sobermh/self_s
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/claude-codex-memory-sync
 
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/tokens/TokensCowork/tokenscowork-plugin-dev
-
-Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/tokens/TokensCowork/plugin-testcases-create
-
-Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/tokens/TokensCowork/plugin-testcases-exec
 ```
 
 After installation, start a new task and invoke it with:
@@ -90,9 +80,9 @@ Use $claude-codex-memory-sync to read the same-project Claude Code memory for th
 
 Use $tokenscowork-plugin-dev to inspect and improve this TokensCowork plugin.
 
-Use $plugin-testcases-create to create the standardized test cases for this TokensCowork plugin.
+Use $tokenscowork-plugin-dev to create the standardized functional regression cases for this TokensCowork plugin.
 
-Use $plugin-testcases-exec to execute all pinned plugin test cases from TokensCowork.
+Use $tokenscowork-plugin-dev to execute all pinned plugin test cases from TokensCowork without modifying code.
 ```
 
 For an existing project:
@@ -144,13 +134,8 @@ Clone this repository and copy the Skill directory into the local Codex skills d
   references/
     layout.md
     runtime.md
+    testing.md
     release.md
-
-~/.codex/skills/plugin-testcases-create/
-  SKILL.md
-
-~/.codex/skills/plugin-testcases-exec/
-  SKILL.md
 ```
 
-`commit-convention`, `plugin-testcases-create`, and `plugin-testcases-exec` are single `SKILL.md` skills; `agent-workflow` and `learning-path-teacher` ship `SKILL.md` plus a `references/` directory that must be copied together (the routing layer loads reference files on demand). `claude-codex-memory-sync` ships `SKILL.md`, its helper script, storage reference, and UI metadata; copy the full directory so both lookup and write-back modes work.
+`commit-convention` is a single `SKILL.md` skill; `tokenscowork-plugin-dev` ships its entrypoint plus all four reference files, which must be copied together; `agent-workflow` and `learning-path-teacher` ship `SKILL.md` plus a `references/` directory that must be copied together (the routing layer loads reference files on demand). `claude-codex-memory-sync` ships `SKILL.md`, its helper script, storage reference, and UI metadata; copy the full directory so both lookup and write-back modes work.
