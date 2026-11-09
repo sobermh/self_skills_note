@@ -12,6 +12,15 @@ Reusable Codex skills maintained for personal and project use.
 
 Use this Skill for dirty-worktree analysis, commit splitting, message generation, staged-diff verification, commits, and pushes.
 
+### Agent Hub
+
+- Skill name: `agent-hub`
+- Path: `skills/agent-hub/`
+- Purpose: lean multi-agent collaboration — one coordinator dispatches tickets to module owners, owners reply with receipts, the coordinator reviews.
+- Structure: a single `SKILL.md`; the per-project hub keeps `README.md` (rules), `owners.md` (path ownership), `knowledge.md` (current shared facts) and `tickets/`.
+
+The same `SKILL.md` is installed for both Codex and Claude Code. Work is dispatched through the current tool's sub-agent mechanism; a separate user-side chat is created only when the user explicitly asks for one. Commits, pushes and deployments still follow the user's authorization.
+
 ### Learning Path Teacher
 
 - Skill name: `learning-path-teacher`
@@ -48,6 +57,8 @@ Ask Codex:
 ```text
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/commit-convention
 
+Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/agent-hub
+
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/learning-path-teacher
 
 Use $skill-installer to install the skill from https://github.com/sobermh/self_skills_note/tree/main/skills/claude-codex-memory-sync
@@ -77,6 +88,9 @@ Clone this repository and copy the Skill directory into the local Codex skills d
 
 ```text
 ~/.codex/skills/commit-convention/
+  SKILL.md
+
+~/.codex/skills/agent-hub/
   SKILL.md
 
 ~/.codex/skills/learning-path-teacher/
